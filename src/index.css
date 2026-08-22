@@ -10,7 +10,9 @@
   --color-brick-light: #F3DCD5;
   --color-sage: #3E7C59;
   --color-sage-light: #DCEBE1;
-  --color-gold: #C79A3D;
+    --color-gold: #C79A3D;
+  --color-mist: #C9D6D2;
+  --color-ink-muted: #5C7480;
   --font-display: "Newsreader", Georgia, serif;
   --font-body: "IBM Plex Sans", system-ui, sans-serif;
 }

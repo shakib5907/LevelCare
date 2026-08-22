@@ -1,8 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 export default function Navbar() {
-    return (
+  const { pathname } = useLocation();
+  const isAuthPage = pathname === '/login' || pathname === '/register';
+   return (
     <header className="bg-parchment">
       <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
         <Link to="/" className="font-display text-xl text-ink font-semibold">
@@ -15,7 +18,7 @@ export default function Navbar() {
             <Link to="/how-it-works" className="hover:text-ink transition">How it works</Link>
           </nav>
 
-          <div className="flex items-center gap-3">
+                    <div className={`items-center gap-3 ${isAuthPage ? 'hidden' : 'flex'}`}>
             <Link to="/login" className="px-5 py-2 rounded-full text-sm font-medium text-ink border border-ink/15 hover:border-ink/30 transition">
               Login
             </Link>
