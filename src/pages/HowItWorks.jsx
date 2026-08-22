@@ -8,7 +8,7 @@ export default function HowItWorks() {
       {/* Hero Image */}
       <img
         src="https://palmmedicalcenters.com/wp-content/uploads/2022/12/iStock-493216309.jpg"
-        alt="How LevelCare works"
+        alt="How LevelCare works?"
         className="w-full h-56 sm:h-72 md:h-80 lg:h-96 object-cover object-top rounded-2xl mb-10 sm:mb-14 shadow-md"
       />
 
