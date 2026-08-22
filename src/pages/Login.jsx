@@ -17,7 +17,7 @@ function Login() {
   }
 
   return (
-        <div className="w-full min-h-[calc(100vh-80px)] flex items-center justify-center px-6 py-12">
+    <div className="w-full min-h-[calc(100vh-80px)] flex items-center justify-center px-6 py-12">
       <div className="w-full max-w-md bg-white rounded-2xl border border-mist/60 shadow-sm p-8">
         <h1 className="text-3xl text-ink mb-1">Welcome back</h1>
         <p className="text-sm text-ink-muted mb-8">
@@ -55,10 +55,13 @@ function Login() {
           </Link>
         </p>
 
-        <div className="border-t border-mist mt-8 pt-4">
-          <p className="text-xs text-brick text-center">
-            Medical emergency? Call <span className="font-semibold">999</span> — no account needed.
+        <div className="border-t border-mist mt-8 pt-5">
+          <p className="text-xs text-ink-muted text-center mb-2">
+            Medical emergency? Don't wait to sign in.
           </p>
+          <a href="tel:999" className="flex items-center justify-center w-full bg-brick-light hover:bg-brick text-brick hover:text-white border border-brick/30 rounded-full py-2.5 text-sm font-medium transition">
+            Call 999 now
+          </a>
         </div>
       </div>
     </div>
