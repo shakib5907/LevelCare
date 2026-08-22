@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 @theme {
-  --color-ink: #1B2320;
-  --color-parchment: #F6F4EE;
-  --color-teal: #0E4B43;
-  --color-teal-light: #DCE9E5;
-  --color-teal-dark: #082E29;
+  --color-ink: #0B2B3C;
+  --color-parchment: #EDF4F1;
+  --color-teal: #16796B;
+  --color-teal-light: #D9EDE8;
+  --color-teal-dark: #0F5A50;
   --color-brick: #B8452E;
   --color-brick-light: #F3DCD5;
   --color-sage: #3E7C59;
@@ -15,17 +15,21 @@
   --font-body: "IBM Plex Sans", system-ui, sans-serif;
 }
 
+html {
+  font-size: 85%;
+}
+
 html, body {
-  background-color: #F6F4EE;
-  color: #1B2320;
+  background-color: #EDF4F1;
+  color: #0B2B3C;
 }
 
 body {
-  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
 }
 
 h1, h2, h3, .font-display {
-  font-family: 'Newsreader', Georgia, serif;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
 }
 
 .care-ladder {
@@ -34,7 +38,7 @@ h1, h2, h3, .font-display {
 }
 
 .care-ladder .rung {
-  border-left: 3px solid #C9C2AE;
+  border-left: 3px solid #C9D6D2;
   padding: 1.1rem 0 1.1rem 1.25rem;
   position: relative;
 }
@@ -48,11 +52,11 @@ h1, h2, h3, .font-display {
   width: 13px;
   height: 13px;
   border-radius: 999px;
-  background: #C9C2AE;
-  border: 2px solid #F6F4EE;
+  background: #C9D6D2;
+  border: 2px solid #EDF4F1;
 }
 
-.care-ladder .rung.active { border-left-color: #0E4B43; }
-.care-ladder .rung.active::before { background: #0E4B43; }
+.care-ladder .rung.active { border-left-color: #16796B; }
+.care-ladder .rung.active::before { background: #16796B; }
 .care-ladder .rung.locked { border-left-color: #B8452E; }
 .care-ladder .rung.locked::before { background: #B8452E; }
