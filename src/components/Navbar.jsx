@@ -22,7 +22,7 @@ export default function Navbar() {
           </nav>
 
                     <div className={`items-center gap-3 ${isAuthPage ? 'hidden' : 'flex'}`}>
-            <Link to="/login" className="px-5 py-2 rounded-full text-sm font-medium text-ink border border-ink/15 hover:border-ink/30 transition">
+            <Link to="/login" className="px-5 py-2 rounded-full text-sm font-medium bg-teal text-white hover:bg-teal-dark transition">
               Login
             </Link>
             <Link to="/register" className="px-5 py-2 rounded-full text-sm font-medium bg-teal text-white hover:bg-teal-dark transition">

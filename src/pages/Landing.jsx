@@ -40,7 +40,7 @@ export default function Landing() {
           <div className="absolute left-0 top-8 w-80 rounded-2xl bg-white shadow-xl p-6">
             <div className="flex items-center gap-3 mb-5">
               <div className="h-10 w-10 rounded-full bg-teal flex items-center justify-center text-white text-sm font-medium">
-                RU
+                AR
               </div>
               <div>
                 <div className="text-sm font-medium text-ink">Aniruddha Roy Arka</div>
