@@ -114,13 +114,13 @@ export default function HowItWorks() {
       {/* Emergency Footer */}
       <div className="mt-16 sm:mt-20">
 
-        <div className="rounded-2xl bg-brick/10 border border-brick/20 p-6 sm:p-8 lg:p-10">
+          <div className="rounded-2xl bg-teal/10 border border-teal/20 p-6 sm:p-8 lg:p-10">
 
           <div className="flex flex-col sm:flex-row items-center gap-5 sm:gap-7">
 
             {/* Emergency Icon */}
             <div className="flex-shrink-0">
-              <div className="w-16 h-16 rounded-full bg-brick/10 flex items-center justify-center text-3xl">
+                <div className="w-16 h-16 rounded-full bg-teal/10 flex items-center justify-center text-3xl">
                 🚨
               </div>
             </div>

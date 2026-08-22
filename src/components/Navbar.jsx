@@ -5,16 +5,20 @@ export default function Navbar() {
   const { pathname } = useLocation();
   const isAuthPage = pathname === '/login' || pathname === '/register';
    return (
-    <header className="bg-parchment">
+    <header className="bg-teal">
       <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
-        <Link to="/" className="font-display text-xl text-ink font-semibold">
+        <Link to="/" className="px-5 py-2 rounded-full text-sm font-medium bg-teal text-white    hover:bg-teal-dark transition">
           LevelCare
         </Link>
 
         <div className="flex items-center gap-8">
           <nav className="hidden md:flex items-center gap-8 text-sm text-ink/70">
-            <Link to="/" className="hover:text-ink transition">Home</Link>
-            <Link to="/how-it-works" className="hover:text-ink transition">How it works</Link>
+            <Link to="/" className="px-5 py-2 rounded-full text-sm font-medium bg-teal text-white hover:bg-teal-dark transition">
+              Home
+            </Link>
+            <Link to="/how-it-works" className="px-5 py-2 rounded-full text-sm font-medium bg-teal text-white hover:bg-teal-dark transition">
+              How It Works
+            </Link>
           </nav>
 
                     <div className={`items-center gap-3 ${isAuthPage ? 'hidden' : 'flex'}`}>
