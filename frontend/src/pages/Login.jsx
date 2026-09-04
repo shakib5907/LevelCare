@@ -1,19 +1,32 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Field from '../components/Field';
+import { useAuth } from '../context/AuthContext';
 
 function Login() {
-  const [identifier, setIdentifier] = useState('');
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit() {
+  async function handleSubmit() {
     const next = {};
-    if (!identifier.trim()) next.identifier = 'Enter your phone number or email.';
+    if (!email.trim()) next.email = 'Enter your email.';
     if (!password) next.password = 'Enter your password.';
     setErrors(next);
     if (Object.keys(next).length > 0) return;
-    console.log('login', { identifier, password });
+
+    setLoading(true);
+    try {
+      await login(email.trim(), password);
+      navigate('/');
+    } catch (err) {
+      setErrors({ form: err.message });
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -25,11 +38,12 @@ function Login() {
         </p>
 
         <Field
-          label="Phone number or email"
-          placeholder="01712 345678"
-          value={identifier}
-          onChange={(e) => setIdentifier(e.target.value)}
-          error={errors.identifier}
+          label="Email"
+          type="email"
+          placeholder="you@example.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          error={errors.email}
         />
 
         <Field
@@ -41,11 +55,14 @@ function Login() {
           error={errors.password}
         />
 
+        {errors.form && <p className="text-xs text-brick -mt-2 mb-4">{errors.form}</p>}
+
         <button
           onClick={handleSubmit}
-          className="w-full bg-teal hover:bg-teal-dark text-white rounded-full py-3 text-sm font-medium transition"
+          disabled={loading}
+          className="w-full bg-teal hover:bg-teal-dark text-white rounded-full py-3 text-sm font-medium transition disabled:opacity-50"
         >
-          Log in
+          {loading ? 'Logging in...' : 'Log in'}
         </button>
 
         <p className="text-sm text-ink-muted text-center mt-4">

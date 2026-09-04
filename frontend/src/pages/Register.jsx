@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Field from '../components/Field';
+import { useAuth } from '../context/AuthContext';
 
 const ROLES = [
   { id: 'patient', title: 'Patient', blurb: 'Book visits and hold referrals' },
@@ -9,27 +10,59 @@ const ROLES = [
   { id: 'operator', title: 'Emergency operator', blurb: 'Triage incoming calls' },
 ];
 
+// Frontend role ids -> backend role ids (the API's ROLES enum spells this one out fully)
+const ROLE_TO_API = {
+  patient: 'patient',
+  clinician: 'clinician',
+  paramedic: 'paramedic',
+  operator: 'emergency_operator',
+};
+
 function Register() {
+  const { register } = useAuth();
   const [step, setStep] = useState(1);
   const [role, setRole] = useState('patient');
   const [form, setForm] = useState({});
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [resultMessage, setResultMessage] = useState('');
 
   function set(key) {
     return (e) => setForm({ ...form, [key]: e.target.value });
   }
 
-  function handleSubmit() {
+  async function handleSubmit() {
     const next = {};
     if (!form.name?.trim()) next.name = 'Enter your full name.';
     if (!form.phone?.trim()) next.phone = 'Enter your phone number.';
+    if (!form.email?.trim()) next.email = 'Enter your email.';
     if (!form.password || form.password.length < 8) next.password = 'Use at least 8 characters.';
     if (role === 'patient' && !form.area?.trim()) next.area = 'Enter your area.';
     if (role === 'clinician' && !form.bmdc?.trim()) next.bmdc = 'Enter your BMDC number.';
     setErrors(next);
     if (Object.keys(next).length > 0) return;
-    setSubmitted(true);
+
+    setSubmitting(true);
+    try {
+      const payload = {
+        name: form.name,
+        email: form.email,
+        phone: form.phone,
+        password: form.password,
+        role: ROLE_TO_API[role],
+        upazila: role === 'patient' ? form.area : undefined,
+        facilityName: form.facility,
+        specialty: form.specialty,
+      };
+      const res = await register(payload);
+      setResultMessage(res.message);
+      setSubmitted(true);
+    } catch (err) {
+      setErrors({ form: err.message });
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -55,9 +88,7 @@ function Register() {
             </h1>
 
             <p className="text-sm text-ink-muted mt-2 leading-relaxed">
-              {role === 'patient'
-                ? 'You can sign in now and book your first appointment at a primary facility.'
-                : 'Your account exists, but an administrator has to confirm your credentials before you can sign in.'}
+              {resultMessage}
             </p>
 
             <div className="bg-parchment rounded-lg p-4 mt-4 text-left">
@@ -70,8 +101,8 @@ function Register() {
                 <span className="text-ink font-medium">{ROLES.find((r) => r.id === role).title}</span>
               </div>
               <div className="flex justify-between text-sm py-1">
-                <span className="text-ink-muted">Phone</span>
-                <span className="text-ink font-medium">{form.phone}</span>
+                <span className="text-ink-muted">Email</span>
+                <span className="text-ink font-medium">{form.email}</span>
               </div>
             </div>
 
@@ -142,6 +173,8 @@ function Register() {
               <Field label="Phone number" placeholder="01712 345678" value={form.phone || ''} onChange={set('phone')} error={errors.phone} />
             </div>
 
+            <Field label="Email" type="email" placeholder="you@example.com" value={form.email || ''} onChange={set('email')} error={errors.email} />
+
             {role === 'patient' && (
               <div className="grid grid-cols-2 gap-x-3">
                 <Field label="Date of birth" type="date" value={form.dob || ''} onChange={set('dob')} />
@@ -154,7 +187,6 @@ function Register() {
                 <Field label="BMDC number" placeholder="A-64821" value={form.bmdc || ''} onChange={set('bmdc')} error={errors.bmdc} />
                 <Field label="Specialty" placeholder="General medicine" value={form.specialty || ''} onChange={set('specialty')} />
                 <Field label="Facility" placeholder="Health complex" value={form.facility || ''} onChange={set('facility')} />
-                <Field label="Work email" type="email" placeholder="name@gov.bd" value={form.email || ''} onChange={set('email')} />
               </div>
             )}
 
@@ -181,6 +213,8 @@ function Register() {
               error={errors.password}
             />
 
+            {errors.form && <p className="text-xs text-brick -mt-2 mb-2">{errors.form}</p>}
+
             <div className="flex gap-2 mt-6">
               <button
                 onClick={() => setStep(1)}
@@ -190,9 +224,10 @@ function Register() {
               </button>
               <button
                 onClick={handleSubmit}
-                className="bg-teal hover:bg-teal-dark text-white rounded-full px-6 py-2.5 text-sm font-medium transition"
+                disabled={submitting}
+                className="bg-teal hover:bg-teal-dark text-white rounded-full px-6 py-2.5 text-sm font-medium transition disabled:opacity-50"
               >
-                Create account
+                {submitting ? 'Creating account...' : 'Create account'}
               </button>
             </div>
           </>
