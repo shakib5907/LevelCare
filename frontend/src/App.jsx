@@ -5,6 +5,7 @@ import Landing from './pages/Landing';
 import HowItWorks from './pages/HowItWorks';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import ClinicianDashboard from './pages/ClinicianDashboard';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/how-it-works" element={<HowItWorks />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/clinician" element={<ClinicianDashboard />} />
         </Routes>
       </main>
     </div>

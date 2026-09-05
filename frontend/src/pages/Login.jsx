@@ -20,8 +20,16 @@ function Login() {
 
     setLoading(true);
     try {
-      await login(email.trim(), password);
-      navigate('/');
+            const u = await login(email.trim(), password);
+      const home = {
+        clinician: '/clinician',
+        gp: '/clinician',
+        patient: '/',
+        paramedic: '/',
+        emergency_operator: '/',
+        admin: '/',
+      };
+      navigate(home[u.role] || '/');
     } catch (err) {
       setErrors({ form: err.message });
     } finally {
