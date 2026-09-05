@@ -96,6 +96,7 @@ function Register() {
                 <button
                   key={r.id}
                   onClick={() => setRole(r.id)}
+                  
                   className={`text-left rounded-xl p-4 border-2 transition ${
                     role === r.id
                       ? 'bg-teal-light border-teal'
