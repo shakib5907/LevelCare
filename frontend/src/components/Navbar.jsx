@@ -8,6 +8,13 @@ export default function Navbar() {
   const { user, loading, logout } = useAuth();
   const isAuthPage = pathname === '/login' || pathname === '/register';
 
+  const DASHBOARD_BY_ROLE = {
+    patient: '/patient',
+    clinician: '/clinician',
+    gp: '/clinician',
+  };
+  const dashboardPath = user ? DASHBOARD_BY_ROLE[user.role] : null;
+
   async function handleLogout() {
     await logout();
     navigate('/');
@@ -34,6 +41,14 @@ export default function Navbar() {
             <div className={`items-center gap-3 ${isAuthPage ? 'hidden' : 'flex'}`}>
               {user ? (
                 <>
+                  {dashboardPath && (
+                    <Link
+                      to={dashboardPath}
+                      className="px-5 py-2 rounded-full text-sm font-medium bg-teal text-white hover:bg-teal-dark transition"
+                    >
+                      Dashboard
+                    </Link>
+                  )}
                   <span className="text-sm text-white/80 hidden sm:inline">
                     {user.name}
                   </span>
