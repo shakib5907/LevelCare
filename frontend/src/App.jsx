@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import ClinicianDashboard from './pages/ClinicianDashboard';
 import PatientDashboard from './pages/PatientDashboard';
+import GuestOnlyRoute from './components/GuestOnlyRoute';
 
 function App() {
   return (
@@ -16,8 +17,22 @@ function App() {
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/how-it-works" element={<HowItWorks />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+                    <Route
+            path="/login"
+            element={
+              <GuestOnlyRoute>
+                <Login />
+              </GuestOnlyRoute>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <GuestOnlyRoute>
+                <Register />
+              </GuestOnlyRoute>
+            }
+          />
           <Route path="/clinician" element={<ClinicianDashboard />} />
           <Route path="/patient" element={<PatientDashboard />} />
         </Routes>
