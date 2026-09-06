@@ -24,7 +24,7 @@ function Login() {
       const home = {
         clinician: '/clinician',
         gp: '/clinician',
-        patient: '/',
+        patient: '/patient',
         paramedic: '/',
         emergency_operator: '/',
         admin: '/',
