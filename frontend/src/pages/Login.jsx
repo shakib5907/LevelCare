@@ -22,13 +22,14 @@ function Login() {
     try {
             const u = await login(email.trim(), password);
       const home = {
-        clinician: '/clinician',
-        gp: '/clinician',
-        patient: '/patient',
-        paramedic: '/',
-        emergency_operator: '/',
-        admin: '/',
-      };
+  clinician: '/clinician',
+  gp: '/clinician',
+  patient: '/patient',
+  paramedic: '/clinician',
+  emergency_operator: '/emergency',
+  admin: '/admin',
+};
+
       navigate(home[u.role] || '/');
     } catch (err) {
       setErrors({ form: err.message });
