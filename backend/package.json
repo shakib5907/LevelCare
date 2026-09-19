@@ -4,9 +4,10 @@
   "description": "LevelCare API - full backend (auth, facilities, referrals, appointments, emergency dispatch, admin analytics, Cloudinary file uploads)",
   "main": "index.js",
   "type": "module",
-  "scripts": {
+    "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "seed": "node seed.js"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
