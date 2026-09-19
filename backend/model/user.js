@@ -18,6 +18,14 @@ const userSchema = new Schema(
     role: { type: Schema.Types.String, enum: ROLES, required: true, default: "patient" },
 
     facilityName: Schema.Types.String,
+    
+    facilityLevel: {
+      type: Schema.Types.String,
+      enum: ["primary", "secondary", "tertiary", "specialized"],
+      default: function () {
+        return this.role === "gp" ? "primary" : undefined;
+      },
+    },
     specialty: Schema.Types.String,
     isVerified: {
       type: Schema.Types.Boolean,
