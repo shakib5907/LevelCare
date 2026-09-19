@@ -20,7 +20,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/how-it-works" element={<HowItWorks />} />
-          <Route
+                    <Route
             path="/login"
             element={
               <GuestOnlyRoute>

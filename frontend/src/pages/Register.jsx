@@ -40,6 +40,7 @@ function Register() {
     if (!form.password || form.password.length < 8) next.password = 'Use at least 8 characters.';
     if (role === 'patient' && !form.area?.trim()) next.area = 'Enter your area.';
     if (role === 'clinician' && !form.bmdc?.trim()) next.bmdc = 'Enter your BMDC number.';
+    if ((role === 'clinician' || role === 'paramedic') && !form.facilityLevel) next.facilityLevel = 'Select the level you work at.';
     setErrors(next);
     if (Object.keys(next).length > 0) return;
 
@@ -53,6 +54,7 @@ function Register() {
         role: ROLE_TO_API[role],
         upazila: role === 'patient' ? form.area : undefined,
         facilityName: form.facility,
+        facilityLevel: form.facilityLevel,
         specialty: form.specialty,
       };
       const res = await register(payload);
@@ -187,6 +189,22 @@ function Register() {
                 <Field label="BMDC number" placeholder="A-64821" value={form.bmdc || ''} onChange={set('bmdc')} error={errors.bmdc} />
                 <Field label="Specialty" placeholder="General medicine" value={form.specialty || ''} onChange={set('specialty')} />
                 <Field label="Facility" placeholder="Health complex" value={form.facility || ''} onChange={set('facility')} />
+                <div className="mb-4">
+                  <label className="block text-xs text-ink-muted mb-1.5">Facility level</label>
+                  <select
+                    value={form.facilityLevel || ''}
+                    onChange={set('facilityLevel')}
+                    className={`w-full bg-white rounded-lg px-3 py-2.5 text-sm text-ink outline-none border transition ${
+                      errors.facilityLevel ? 'border-brick focus:ring-4 focus:ring-brick-light' : 'border-mist focus:border-teal focus:ring-4 focus:ring-teal-light'
+                    }`}
+                  >
+                    <option value="">Select level</option>
+                    <option value="secondary">Secondary</option>
+                    <option value="tertiary">Tertiary</option>
+                    <option value="specialized">Specialized</option>
+                  </select>
+                  {errors.facilityLevel && <p className="text-xs text-brick mt-1.5">{errors.facilityLevel}</p>}
+                </div>
               </div>
             )}
 
@@ -194,6 +212,23 @@ function Register() {
               <div className="grid grid-cols-2 gap-x-3">
                 <Field label="Staff ID" placeholder="PM-2841" value={form.staffId || ''} onChange={set('staffId')} />
                 <Field label="Base facility" placeholder="Health complex" value={form.facility || ''} onChange={set('facility')} />
+                <div className="mb-4">
+                  <label className="block text-xs text-ink-muted mb-1.5">Facility level</label>
+                  <select
+                    value={form.facilityLevel || ''}
+                    onChange={set('facilityLevel')}
+                    className={`w-full bg-white rounded-lg px-3 py-2.5 text-sm text-ink outline-none border transition ${
+                      errors.facilityLevel ? 'border-brick focus:ring-4 focus:ring-brick-light' : 'border-mist focus:border-teal focus:ring-4 focus:ring-teal-light'
+                    }`}
+                  >
+                    <option value="">Select level</option>
+                    <option value="primary">Primary</option>
+                    <option value="secondary">Secondary</option>
+                    <option value="tertiary">Tertiary</option>
+                    <option value="specialized">Specialized</option>
+                  </select>
+                  {errors.facilityLevel && <p className="text-xs text-brick mt-1.5">{errors.facilityLevel}</p>}
+                </div>
               </div>
             )}
 
