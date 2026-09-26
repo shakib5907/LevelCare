@@ -9,13 +9,13 @@ export default function Navbar() {
   const isAuthPage = pathname === '/login' || pathname === '/register';
 
   const DASHBOARD_BY_ROLE = {
-    patient: '/patient',
-    clinician: '/clinician',
-    gp: '/clinician',
-    paramedic: '/clinician',
-    emergency_operator: '/emergency',
-    admin: '/admin',
-  };
+  patient: '/patient',
+  clinician: '/clinician',
+  gp: '/clinician',
+  paramedic: '/clinician',
+  emergency_operator: '/emergency',
+  admin: '/admin',
+};
   const dashboardPath = user ? DASHBOARD_BY_ROLE[user.role] : null;
 
   async function handleLogout() {
