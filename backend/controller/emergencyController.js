@@ -1,5 +1,6 @@
 import EmergencyCall from "../model/emergencyCall.js";
 import Facility from "../model/facility.js";
+import User from "../model/user.js";
 
 function suggestLevel(reportedCondition = "") {
   const text = reportedCondition.toLowerCase();
@@ -68,7 +69,16 @@ export const updateEmergencyCallStatus = async (req, res) => {
 
 export const getEmergencyCalls = async (req, res) => {
   const filter = {};
-  if (req.userRole === "emergency_operator") filter.handledBy = req.userId;
+
+  if (req.userRole === "emergency_operator") {
+    filter.handledBy = req.userId;
+  } else if (req.userRole === "patient") {
+    filter.patient = req.userId;
+  } else if (["clinician", "gp"].includes(req.userRole)) {
+    const clinician = await User.findById(req.userId);
+    const facilitiesAtLevel = await Facility.find({ level: clinician.facilityLevel }).select("_id");
+    filter.receivingFacility = { $in: facilitiesAtLevel.map((f) => f._id) };
+  }
 
   const calls = await EmergencyCall.find(filter)
     .populate("receivingFacility", "name level")

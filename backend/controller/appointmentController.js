@@ -82,6 +82,21 @@ export const getAppointments = async (req, res) => {
   return res.status(200).json(appointments);
 };
 
+export const rescheduleAppointment = async (req, res) => {
+  const { scheduledAt } = req.body;
+  if (!scheduledAt) return res.status(400).json({ error: "scheduledAt is required" });
+
+  const appt = await Appointment.findOne({ _id: req.params.id, patient: req.userId });
+  if (!appt) return res.status(404).json({ error: "Appointment not found" });
+  if (["completed", "cancelled"].includes(appt.status)) {
+    return res.status(400).json({ error: `Cannot reschedule a ${appt.status} appointment` });
+  }
+
+  appt.scheduledAt = scheduledAt;
+  await appt.save();
+  return res.status(200).json(appt);
+};
+
 export const cancelAppointment = async (req, res) => {
   const appt = await Appointment.findOne({ _id: req.params.id, patient: req.userId });
   if (!appt) return res.status(404).json({ error: "Appointment not found" });
