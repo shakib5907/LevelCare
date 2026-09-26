@@ -67,9 +67,15 @@ export const createAppointment = async (req, res) => {
 };
 
 export const getAppointments = async (req, res) => {
-  const filter = {};
+    const filter = {};
   if (req.userRole === "patient") {
     filter.patient = req.userId;
+  }
+  if (req.query.status) {
+    filter.status = req.query.status;
+  }
+  if (req.query.mine === "true" && ["gp", "clinician"].includes(req.userRole)) {
+    filter.provider = req.userId;
   }
 
 
@@ -112,6 +118,7 @@ export const updateAppointmentStatus = async (req, res) => {
   }
   const appt = await Appointment.findById(req.params.id);
   if (!appt) return res.status(404).json({ error: "Appointment not found" });
+   if (status === "started") appt.provider = req.userId;
   appt.status = status;
   await appt.save();
   return res.status(200).json(appt);

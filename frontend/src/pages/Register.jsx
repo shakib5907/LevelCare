@@ -165,6 +165,7 @@ function Register() {
                     }`}
                   >
                     <option value="">Select level</option>
+                    <option value="primary">Primary</option>
                     <option value="secondary">Secondary</option>
                     <option value="tertiary">Tertiary</option>
                     <option value="specialized">Specialized</option>

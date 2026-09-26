@@ -203,7 +203,7 @@ function IssueReferral() {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    api.get('/appointments', { status: 'completed' }).then(setAppointments).catch(() => {});
+        api.get('/appointments', { status: 'completed', mine: 'true' }).then(setAppointments).catch(() => {});
   }, []);
 
   async function submit(e) {
