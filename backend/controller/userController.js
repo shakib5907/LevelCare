@@ -3,6 +3,9 @@ import User, { ROLES } from "../model/user.js";
 import Referral from "../model/referral.js";
 import Appointment from "../model/appointment.js";
 import EmergencyCall from "../model/emergencyCall.js";
+import jwt from "jsonwebtoken";
+
+const lifetime = "3600000"; 
 
 export const getProfile = async (req, res) => {
   try {
@@ -56,10 +59,27 @@ export const createUser = async (req, res) => {
     }
     await newUser.save();
 
+    
+    const token = jwt.sign(
+      { id: newUser.id, role: newUser.role },
+      process.env.JWT_SECRET,
+      { expiresIn: lifetime },
+    );
+    res.cookie("token", token, {
+      maxAge: lifetime,
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      path: "/",
+    });
+
+    const { password: _omit, ...safeUser } = newUser.toObject();
+
     return res.status(201).json({
+      ...safeUser,
       message:
         role === "patient"
-          ? "Registration successful. You can now log in."
+          ? "Registration successful."
           : "Registered. Your account needs administrator verification before you can act on referrals or appointments.",
     });
   } catch (err) {
@@ -67,7 +87,7 @@ export const createUser = async (req, res) => {
   }
 };
 
-// ---- Admin only (gated by checkRole("admin") in routes/users.js) ----
+
 
 export const getPendingStaff = async (req, res) => {
   const staff = await User.find({ role: { $ne: "patient" }, isVerified: false }).select([
@@ -86,8 +106,7 @@ export const verifyStaff = async (req, res) => {
   return res.status(200).json({ message: "Staff account verified" });
 };
 
-// Headline analytics: referral compliance rate is the % of tertiary/specialized
-// appointments that arrived with a valid referral attached.
+
 export const getAnalytics = async (req, res) => {
   const [primaryVisits, secondaryVisits] = await Promise.all([
     Appointment.countDocuments({ level: "primary" }),

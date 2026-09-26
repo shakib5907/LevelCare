@@ -22,7 +22,9 @@ export function AuthProvider({ children }) {
   }
 
   async function register(payload) {
-    return api.post('/users', payload);
+    const res = await api.post('/users', payload);
+    setUser(res);
+    return res;
   }
 
   async function logout() {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Field from '../components/Field';
 import { useAuth } from '../context/AuthContext';
 
@@ -10,7 +10,6 @@ const ROLES = [
   { id: 'operator', title: 'Emergency operator', blurb: 'Triage incoming calls' },
 ];
 
-// Frontend role ids -> backend role ids (the API's ROLES enum spells this one out fully)
 const ROLE_TO_API = {
   patient: 'patient',
   clinician: 'clinician',
@@ -18,15 +17,23 @@ const ROLE_TO_API = {
   operator: 'emergency_operator',
 };
 
+const HOME = {
+  clinician: '/clinician',
+  gp: '/clinician',
+  patient: '/patient',
+  paramedic: '/clinician',
+  emergency_operator: '/emergency',
+  admin: '/admin',
+};
+
 function Register() {
   const { register } = useAuth();
+  const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [role, setRole] = useState('patient');
   const [form, setForm] = useState({});
   const [errors, setErrors] = useState({});
-  const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [resultMessage, setResultMessage] = useState('');
 
   function set(key) {
     return (e) => setForm({ ...form, [key]: e.target.value });
@@ -57,9 +64,8 @@ function Register() {
         facilityLevel: form.facilityLevel,
         specialty: form.specialty,
       };
-      const res = await register(payload);
-      setResultMessage(res.message);
-      setSubmitted(true);
+      const u = await register(payload);
+      navigate(HOME[u.role] || '/');
     } catch (err) {
       setErrors({ form: err.message });
     } finally {
@@ -71,53 +77,13 @@ function Register() {
     <div className="w-full min-h-[calc(100vh-80px)] flex items-center justify-center px-6 py-12">
       <div className="w-full max-w-lg bg-white rounded-2xl border border-mist/60 shadow-sm p-8">
 
-        {!submitted && (
-          <div className="flex items-center gap-2 mb-6">
-            <div className="h-1 flex-1 rounded-full bg-teal" />
-            <div className={`h-1 flex-1 rounded-full ${step === 2 ? 'bg-teal' : 'bg-mist'}`} />
-            <span className="text-xs text-ink-muted whitespace-nowrap ml-1">Step {step} of 2</span>
-          </div>
-        )}
+        <div className="flex items-center gap-2 mb-6">
+          <div className="h-1 flex-1 rounded-full bg-teal" />
+          <div className={`h-1 flex-1 rounded-full ${step === 2 ? 'bg-teal' : 'bg-mist'}`} />
+          <span className="text-xs text-ink-muted whitespace-nowrap ml-1">Step {step} of 2</span>
+        </div>
 
-        {submitted && (
-          <div className="text-center py-4">
-            <div className="w-11 h-11 rounded-full bg-teal-light inline-flex items-center justify-center text-teal-dark text-xl">
-              ✓
-            </div>
-
-            <h1 className="text-xl text-ink mt-3">
-              {role === 'patient' ? 'Account created' : 'Awaiting verification'}
-            </h1>
-
-            <p className="text-sm text-ink-muted mt-2 leading-relaxed">
-              {resultMessage}
-            </p>
-
-            <div className="bg-parchment rounded-lg p-4 mt-4 text-left">
-              <div className="flex justify-between text-sm py-1">
-                <span className="text-ink-muted">Name</span>
-                <span className="text-ink font-medium">{form.name}</span>
-              </div>
-              <div className="flex justify-between text-sm py-1">
-                <span className="text-ink-muted">Role</span>
-                <span className="text-ink font-medium">{ROLES.find((r) => r.id === role).title}</span>
-              </div>
-              <div className="flex justify-between text-sm py-1">
-                <span className="text-ink-muted">Email</span>
-                <span className="text-ink font-medium">{form.email}</span>
-              </div>
-            </div>
-
-            <Link
-              to="/login"
-              className="inline-block bg-teal hover:bg-teal-dark text-white rounded-full px-6 py-2.5 text-sm font-medium transition mt-5"
-            >
-              Go to login
-            </Link>
-          </div>
-        )}
-
-        {!submitted && step === 1 && (
+        {step === 1 && (
           <>
             <h1 className="text-2xl text-ink">How will you use LevelCare?</h1>
             <p className="text-sm text-ink-muted mt-1 mb-5">
@@ -154,7 +120,7 @@ function Register() {
           </>
         )}
 
-        {!submitted && step === 2 && (
+        {step === 2 && (
           <>
             <h1 className="text-2xl text-ink">Your details</h1>
 
@@ -268,12 +234,10 @@ function Register() {
           </>
         )}
 
-        {!submitted && (
-          <p className="text-sm text-ink-muted text-center mt-6">
-            Already registered?{' '}
-            <Link to="/login" className="text-teal font-medium">Log in</Link>
-          </p>
-        )}
+        <p className="text-sm text-ink-muted text-center mt-6">
+          Already registered?{' '}
+          <Link to="/login" className="text-teal font-medium">Log in</Link>
+        </p>
 
       </div>
     </div>
