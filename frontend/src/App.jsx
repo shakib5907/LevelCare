@@ -11,11 +11,14 @@ import EmergencyConsole from './pages/EmergencyConsole';
 import AdminDashboard from './pages/AdminDashboard';
 import GuestOnlyRoute from './components/GuestOnlyRoute';
 import RequireRole from './components/RequireRole';
+import CarbonFootprintDisplay from './components/CarbonFootprintDisplay';
+
 
 function App() {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
+      <CarbonFootprintDisplay />
       <main className="flex-1">
         <Routes>
           <Route path="/" element={<Landing />} />
