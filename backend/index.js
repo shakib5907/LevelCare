@@ -12,6 +12,7 @@ import "dotenv/config";
 import cors from "cors";
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
+import carbonFootprint from "./middlewares/carbonFootprint.js";
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -49,7 +50,9 @@ app.use(
     origin: process.env.ALLOWED_ORIGIN,
   }),
 );
+
 app.use(log);
+app.use(carbonFootprint);
 
 app.get("/api", (req, res) => res.json({ message: "LevelCare API is working" }));
 

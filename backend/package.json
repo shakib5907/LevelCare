@@ -4,20 +4,21 @@
   "description": "LevelCare API - full backend (auth, facilities, referrals, appointments, emergency dispatch, admin analytics, Cloudinary file uploads)",
   "main": "index.js",
   "type": "module",
-    "scripts": {
+  "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
     "seed": "node seed.js"
   },
   "dependencies": {
+    "@tgwf/co2": "^0.19.0",
     "bcrypt": "^6.0.0",
+    "cloudinary": "^2.11.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.9.2",
-    "cloudinary": "^2.11.0",
     "multer": "^2.3.0"
   },
   "devDependencies": {
