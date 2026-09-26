@@ -12,6 +12,9 @@ export default function Navbar() {
     patient: '/patient',
     clinician: '/clinician',
     gp: '/clinician',
+    paramedic: '/clinician',
+    emergency_operator: '/emergency',
+    admin: '/admin',
   };
   const dashboardPath = user ? DASHBOARD_BY_ROLE[user.role] : null;
 
